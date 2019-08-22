@@ -83,7 +83,9 @@ print(df1)
 """
 ```
 
-这样,他就会采取默认的从0开始 index. 还有一种生成 `df` 的方法, 如下 `df2`:
+这样,他就会采取默认的从0开始 index. 
+
+还有一种生成 `df` 的方法, 如下 `df2`:
 
 ```
 df2 = pd.DataFrame({'A' : 1.,
@@ -103,6 +105,8 @@ print(df2)
 3  1.0 2013-01-02  1.0  3  train  foo
 """
 ```
+
+df = pd.DataFrame(np.arange(24).reshape((6,4)),index=dates, columns=['A','B','C','D'])  同时指定行索引和列索引
 
 这种方法能对每一列的数据进行特殊对待. 如果想要查看数据中的类型, 我们可以用 `dtype`这个属性:
 
@@ -283,7 +287,7 @@ print(df[0:3])
 2013-01-02  4  5   6   7
 2013-01-03  8  9  10  11
 """
-
+选择`20130102`到`20130104`标签之间的数据，并且包括这两个标签。
 print(df['20130102':'20130104'])
 
 """
@@ -294,9 +298,7 @@ A   B   C   D
 """
 ```
 
-如果`df[3:3]`将会是一个空对象。后者选择`20130102`到`20130104`标签之间的数据，并且包括这两个标签。
-
-
+如果`df[3:3]`将会是一个空对象。
 
 ## 根据标签 loc 
 
@@ -505,8 +507,6 @@ df.iloc[1,2] = np.nan
 """
 ```
 
-
-
 ## pd.dropna() 
 
 如果想直接去掉有 `NaN` 的行或列, 可以使用 `dropna`
@@ -587,7 +587,7 @@ df.to_csv('test.csv', encoding='utf_8_sig')
 
 ```
 
-# Pandas 合并 concat
+# Pandas 合并-- concat（一般合并）
 
 ## 要点 
 
@@ -702,7 +702,7 @@ print(res)
 # 5  1.0  1.0  1.0
 ```
 
-## join_axes (依照 axes 合并) 
+## join_axes (依照 索引 合并) 
 
 ```
 import pandas as pd
@@ -713,6 +713,8 @@ df1 = pd.DataFrame(np.ones((3,4))*0, columns=['a','b','c','d'], index=[1,2,3])
 df2 = pd.DataFrame(np.ones((3,4))*1, columns=['b','c','d','e'], index=[2,3,4])
 
 #依照`df1.index`进行横向合并
+#axis=1表示横向合并 
+#join_axes=[df1.index]表示按照`df1.index`进行合并
 res = pd.concat([df1, df2], axis=1, join_axes=[df1.index])
 
 #打印结果
@@ -732,7 +734,7 @@ print(res)
 # 4  NaN  NaN  NaN  NaN  1.0  1.0  1.0  1.0
 ```
 
-## append (添加数据) 
+# append (纵向添加数据) 
 
 `append`只有纵向合并，没有横向合并。
 
@@ -781,9 +783,7 @@ print(res)
 # 3  1.0  2.0  3.0  4.0
 ```
 
-# Pandas 合并 merge
-
-## 
+# Pandas 合并 --merge（按key合并）
 
 `pandas`中的`merge`和`concat`类似,但主要是用于**两组有key column的数据**,统一索引的数据. 通常也被用在Database的处理当中.
 
